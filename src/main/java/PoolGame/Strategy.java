@@ -21,19 +21,19 @@ public class Strategy {
             if("white".equals(entry.getValue().getColour()))
             {
                 account.put(entry.getKey(), 1);
-                System.out.println(account.get(entry.getKey()));
+//                System.out.println(account.get(entry.getKey()));
             }
 
             if("blue".equals(entry.getValue().getColour()))
             {
                 account.put(entry.getKey(), 2);
-                System.out.println(account.get(entry.getKey()));
+//                System.out.println(account.get(entry.getKey()));
             }
 
             if("red".equals(entry.getValue().getColour()))
             {
                 account.put(entry.getKey(), 1);
-                System.out.println(account.get(entry.getKey()));
+//                System.out.println(account.get(entry.getKey()));
             }
         }
     }
@@ -44,18 +44,22 @@ public class Strategy {
             Ball nowBall = entry.getValue();
             for(Map.Entry<Integer, Ball> entryIner: map.entrySet()){
                 Ball otherBall = entryIner.getValue();
-                if( !Objects.equals(entryIner,entry)&& Math.sqrt( Math.pow(nowBall.getXPos()-otherBall.getXPos(),2) + Math.pow(nowBall.getYPos()-otherBall.getYPos(),2) ) <= 43 ){
+                if( !Objects.equals(entryIner,entry)&& Math.sqrt( Math.pow(nowBall.getXPos()-otherBall.getXPos(),2) + Math.pow(nowBall.getYPos()-otherBall.getYPos(),2) ) <= nowBall.getShape().getRadius()*2 + 1){
                     double[] vectorA = new double[]{otherBall.getXPos()-nowBall.getXPos(), otherBall.getYPos()-nowBall.getYPos()};
                     double[] vectorB = new double[]{nowBall.getXVel(), nowBall.getYVel()};
                     double cosVal = calculateCosine(vectorA, vectorB);
                     double otherVal = Math.abs(cosVal*(Math.sqrt(Math.pow(nowBall.getXVel(),2)+Math.pow(nowBall.getYVel(),2))));
+                    if(Objects.equals(entry.getValue().getColour(), "white")){
+                        nowBall.setXVel(nowBall.getXVel()*0.05);
+                        nowBall.setYVel(nowBall.getYVel()*0.05);
+                    }
                     otherBall.setXVel(
-                            ( otherBall.getXVel() + Math.pow(0.6, table.getFriction())*otherVal * (2*nowBall.getMass() / (nowBall.getMass()+otherBall.getMass())) )*
+                            ( otherBall.getXVel() + Math.pow(0.8, table.getFriction())*otherVal * (2*nowBall.getMass() / (nowBall.getMass()+otherBall.getMass())) )*
                                     ((otherBall.getXPos()-nowBall.getXPos())/
                                     (Math.sqrt(Math.pow(nowBall.getXPos()-otherBall.getXPos(),2)+Math.pow(nowBall.getYPos()-otherBall.getYPos(),2))))
                     );
                     otherBall.setYVel(
-                            ( otherBall.getYVel() + Math.pow(0.6, table.getFriction())*otherVal * (2*nowBall.getMass() / (nowBall.getMass()+otherBall.getMass())) )*
+                            ( otherBall.getYVel() + Math.pow(0.8, table.getFriction())*otherVal * (2*nowBall.getMass() / (nowBall.getMass()+otherBall.getMass())) )*
                                     ((otherBall.getYPos()-nowBall.getYPos())/
                                     (Math.sqrt(Math.pow(nowBall.getXPos()-otherBall.getXPos(),2)+Math.pow(nowBall.getYPos()-otherBall.getYPos(),2))))
                     );
@@ -121,12 +125,12 @@ public class Strategy {
             {
                 // 检测小球是不是撞y轴, 如果撞上y轴, 那么y轴速度不变, x轴速度方向变反
 //                System.out.println(ball.getShape().getCenterX());
-                if(ball.getShape().getCenterX() <= 23 || (ball.getShape().getCenterX() + 23 ) >= table.getLength()){
+                if(ball.getShape().getCenterX() <= ball.getShape().getRadius() + 1 || (ball.getShape().getCenterX() + ball.getShape().getRadius() + 1  ) >= table.getLength()){
                     ball.setXVel(- (Math.pow(0.8, table.getFriction())*ball.getXVel()));
                 }
 
                 // 检测小球是不是撞x轴, 如果撞上x轴, 那么x轴速度不变, y轴速度方向变反
-                if(ball.getShape().getCenterY() <= 23 || (ball.getShape().getCenterY() + 23) >= table.getHeight()){
+                if(ball.getShape().getCenterY() <= ball.getShape().getRadius() + 1 || (ball.getShape().getCenterY() + ball.getShape().getRadius() + 1) >= table.getHeight()){
                     ball.setYVel(- (Math.pow(0.8, table.getFriction())*ball.getYVel()));
                 }
             }

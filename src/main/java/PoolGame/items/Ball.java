@@ -22,7 +22,7 @@ public class Ball implements Movable{
         this.yVel = yVel;
         this.shape.setCenterX(xPos);
         this.shape.setCenterY(yPos);
-        this.shape.setRadius(20.0);
+        this.shape.setRadius(15.0);
         this.shape.setFill(Color.valueOf(this.colour));
     }
 
