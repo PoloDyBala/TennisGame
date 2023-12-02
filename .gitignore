@@ -1,0 +1,6 @@
+src/main/java/PoolGame/diagram/
+.idea
+.gradle
+build
+out
+bin
